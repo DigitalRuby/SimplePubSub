@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Version>1.0.0</Version>
+		<Authors>jjxtra</Authors>
+		<Company>Digital Ruby, LLC</Company>
+		<Product>Simple Pub Sub</Product>
+		<Description>Declarative and simple pub/sub for .NET using MassTransit.</Description>
+		<Copyright>(c) 2022-Present Digital Ruby, LLC</Copyright>
+		<LangVersion>latest</LangVersion>
+		<PackageProjectUrl>https://github.com/DigitalRuby/SimplePubSub</PackageProjectUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/DigitalRuby/SimplePubSub</RepositoryUrl>
+		<PackageTags>pub;sub;queue;masstransit;rabbitmq;activemq;redis;sqs;amazonsqs;consumer;producer</PackageTags>
+		<PackageReleaseNotes>Initial commit</PackageReleaseNotes>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DigitalRuby.SimpleDi" Version="1.0.5" />
+		<PackageReference Include="MassTransit.ActiveMQ" Version="8.0.2" />
+		<PackageReference Include="MassTransit.AmazonSQS" Version="8.0.2" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.2" />
+		<PackageReference Include="MassTransit.Redis" Version="8.0.2" />
+	</ItemGroup>
+
+</Project>
