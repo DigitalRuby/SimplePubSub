@@ -7,12 +7,16 @@ public static class MassTransitHelper
 {
     private const string configPath = "DigitalRuby.SimplePubSub.Configuration";
 
-    private static IServiceProvider? serviceProvider;
+    private class Resolver
+    {
+        public IServiceProvider? Provider { get; set; }
+    }
+
     private class MassTransitHelperService : BackgroundService
     {
-        public MassTransitHelperService(IServiceProvider provider)
+        public MassTransitHelperService(IServiceProvider provider, Resolver resolver)
         {
-            MassTransitHelper.serviceProvider = provider;
+            resolver.Provider = provider;
         }
 
         /// <inheritdoc />
@@ -52,7 +56,8 @@ public static class MassTransitHelper
 
         // ugly hack, have not yet figured out how to use IServiceProvider for custom consumers pulled from dependency injection
         // by the time we get inside AddMassTransit, the static IServiceProvider reference will be assigned properly
-        serviceProvider = null;
+        Resolver resolver = new();
+        services.AddSingleton<Resolver>(resolver);
         services.AddHostedService<MassTransitHelperService>();
 
         // assign keys
@@ -74,7 +79,7 @@ public static class MassTransitHelper
                         break;
 
                     case ProviderType.InMemory:
-                        queueSystems.AddQueueSystem(provider.Key, ConfigureInMemory(provider, cfg, namespaceFilterRegex));
+                        queueSystems.AddQueueSystem(provider.Key, ConfigureInMemory(resolver, provider, cfg, namespaceFilterRegex));
                         break;
 
                     case ProviderType.RabbitMq:
@@ -99,7 +104,8 @@ public static class MassTransitHelper
         queueSystems.Wait();
     }
 
-    private static void AddConsumers(IBusFactoryConfigurator cfg,
+    private static void AddConsumers(Resolver resolver,
+        IBusFactoryConfigurator cfg,
         PubSubProvider pubSubProvider,
         string? namespaceFilterRegex)
     {
@@ -149,11 +155,11 @@ public static class MassTransitHelper
                     }
                     endPointCfg.Consumer(consumer.Type, _type =>
                     {
-                        if (serviceProvider is null)
+                        if (resolver is null)
                         {
                             throw new ApplicationException("Fatal: unable to retrieve IServiceProvider");
                         }
-                        return serviceProvider!.GetRequiredService(consumer.Type);
+                        return resolver.Provider!.GetRequiredService(consumer.Type);
                     });
                 }
                 /*
@@ -179,9 +185,9 @@ public static class MassTransitHelper
         }
     }
 
-    private static IBusControl ConfigureInMemory(PubSubProvider provider, IBusRegistrationConfigurator cfg, string? namespaceFilterRegex)
+    private static IBusControl ConfigureInMemory(Resolver resolver, PubSubProvider provider, IBusRegistrationConfigurator cfg, string? namespaceFilterRegex)
     {
-        return Bus.Factory.CreateUsingInMemory(cfg => AddConsumers(cfg, provider, namespaceFilterRegex));
+        return Bus.Factory.CreateUsingInMemory(cfg => AddConsumers(resolver, cfg, provider, namespaceFilterRegex));
     }
 
     /*
