@@ -9,6 +9,7 @@
 		<Authors>jjxtra</Authors>
 		<Company>Digital Ruby, LLC</Company>
 		<Product>Simple Pub Sub</Product>
+		<Title>Simple Pub Sub</Title>
 		<Description>Declarative and simple pub/sub for .NET using Mass Transit.</Description>
 		<Copyright>(c) 2022-Present Digital Ruby, LLC</Copyright>
 		<LangVersion>latest</LangVersion>
