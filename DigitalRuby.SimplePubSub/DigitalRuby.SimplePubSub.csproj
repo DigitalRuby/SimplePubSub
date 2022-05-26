@@ -16,7 +16,7 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/DigitalRuby/SimplePubSub</RepositoryUrl>
-		<PackageTags>pub;sub;queue;masstransit;rabbitmq;activemq;redis;sqs;amazonsqs;consumer;producer</PackageTags>
+		<PackageTags>pub;sub;queue;masstransit;rabbitmq;activemq;redis;sqs;amazonsqs;consumer;producer;azure;service;bus;cloud;attribute;reflection</PackageTags>
 		<PackageReleaseNotes>Initial commit</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
@@ -33,7 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DigitalRuby.SimpleDi" Version="1.0.6" />
+		<PackageReference Include="DigitalRuby.SimpleDi" Version="1.0.8" />
 		<PackageReference Include="MassTransit.ActiveMQ" Version="8.0.2" />
 		<PackageReference Include="MassTransit.AmazonSQS" Version="8.0.2" />
 		<PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.0.2" />

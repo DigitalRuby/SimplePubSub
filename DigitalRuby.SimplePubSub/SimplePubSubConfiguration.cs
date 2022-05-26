@@ -8,13 +8,13 @@ public sealed class SimplePubSubConfiguration
     /// <summary>
     /// List of pub/sub providers
     /// </summary>
-    public IReadOnlyDictionary<string, PubSubProvider>? Providers { get; set; }
+    public IReadOnlyDictionary<string, PubSubConfiguration>? Providers { get; set; }
 }
 
 /// <summary>
-/// A provider such as azure service bus, amazon mq, rabbit mq, etc.
+/// A configuration for a queue such as azure service bus, amazon mq, rabbit mq, etc.
 /// </summary>
-public sealed class PubSubProvider
+public sealed class PubSubConfiguration
 {
     /// <summary>
     /// Provider key
@@ -32,10 +32,45 @@ public sealed class PubSubProvider
     public string ConnectionString { get; set; } = string.Empty;
 
     /// <summary>
+    /// User name. Sometimes this goes in the connection string instead.
+    /// This maps to an AccessKey for some providers like AmazonSqs.
+    /// </summary>
+    public string UserName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Password. Sometimes this goes in the connection string instead.
+    /// This maps to a SecretKey for some providers like AmazonSqs.
+    /// </summary>
+    public string Password { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Whether to use ssl or not. Sometimes this goes in the connection string instead.
+    /// Not all providers use/honor this.
+    /// </summary>
+    public bool UseSsl { get; set; }
+
+    /// <summary>
+    /// Path to ssl certificate.
+    /// Not all providers use/honor this.
+    /// </summary>
+    public string SslCertificatePath { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Passphrase for ssl certificate is SslCertificatePath is specified.
+    /// Not all providers use/honor this.
+    /// </summary>
+    public string SslCertificatePassphrase { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Servers
+    /// </summary>
+    public string[] Servers { get; set; } = Array.Empty<string>();
+
+    /// <summary>
     /// Retry intervals, these should be only a few and 5-10 seconds at most
     /// </summary>
     public TimeSpan[]? Retries { get; set; }
-    
+
     /// <summary>
     /// Redelivery intervals
     /// </summary>
@@ -44,11 +79,6 @@ public sealed class PubSubProvider
 
 public enum ProviderType
 {
-    /// <summary>
-    /// Custom provider
-    /// </summary>
-    Custom = 0,
-
     /// <summary>
     /// In memory, not for production use
     /// </summary>
@@ -60,27 +90,22 @@ public enum ProviderType
     RabbitMq = 2,
 
     /// <summary>
-    /// Redis
-    /// </summary>
-    Redis = 3,
-
-    /// <summary>
     /// Active mq
     /// </summary>
-    ActiveMq = 4,
+    ActiveMq = 3,
 
     /// <summary>
     /// Amazon sqs
     /// </summary>
-    AmazonSqs = 5,
+    AmazonSqs = 4,
 
     /// <summary>
     /// Azure service bus
     /// </summary>
-    AzureServiceBus = 6,
+    AzureServiceBus = 5,
 
     /// <summary>
     /// Grpc
     /// </summary>
-    Grpc = 7
+    Grpc = 6
 }

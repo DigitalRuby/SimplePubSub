@@ -11,9 +11,9 @@ public interface IProducer
     /// <typeparam name="T">Type of message</typeparam>
     /// <param name="message">Message</param>
     /// <param name="cancelToken">Cancel token</param>
-    /// <param name="queueSystems">The queue systems to publish to or empty for all</param>
+    /// <param name="keys">The keys to publish to or empty for all</param>
     /// <returns>Task</returns>
-    public Task ProduceAsync<T>(T message, CancellationToken cancelToken, params string[] queueSystems) where T : class;
+    public Task ProduceAsync<T>(T message, CancellationToken cancelToken = default, params string[] keys) where T : class;
 }
 
 /// <summary>
@@ -37,10 +37,10 @@ public class Producer : IProducer
     }
 
     /// <inheritdoc />
-    public Task ProduceAsync<T>(T message, CancellationToken cancelToken, params string[] queueSystems) where T : class
+    public Task ProduceAsync<T>(T message, CancellationToken cancelToken = default, params string[] keys) where T : class
     {
         List<Task> tasks = new();
-        foreach (var queueSystem in QueueSystems.EnumerateQueueSystems(queueSystems))
+        foreach (var queueSystem in QueueSystems.EnumerateQueueSystems(keys))
         {
             tasks.Add(queueSystem.ProduceAsync(message, cancelToken));
         }
@@ -56,9 +56,9 @@ public interface IQueueSystems
     /// <summary>
     /// Enumerate queue systems
     /// </summary>
-    /// <param name="queueSystems">Queue systems</param>
+    /// <param name="keys">Keys</param>
     /// <returns>Enumerable of queue systems</returns>
-    IEnumerable<QueueSystem> EnumerateQueueSystems(params string[] queueSystems);
+    IEnumerable<QueueSystem> EnumerateQueueSystems(params string[] keys);
 }
 
 /// <summary>
@@ -90,9 +90,9 @@ public sealed class QueueSystems : IQueueSystems
     }
 
     /// <inheritdoc />
-    public IEnumerable<QueueSystem> EnumerateQueueSystems(params string[] queueSystems)
+    public IEnumerable<QueueSystem> EnumerateQueueSystems(params string[] keys)
     {
-        if (queueSystems is null || queueSystems.Length == 0)
+        if (keys is null || keys.Length == 0)
         {
             foreach (var queue in queues.Values)
             {
@@ -101,12 +101,18 @@ public sealed class QueueSystems : IQueueSystems
         }
         else
         {
-            foreach (var key in queueSystems)
+            bool foundOne = false;
+            foreach (var key in keys)
             {
                 if (queues.TryGetValue(key, out var queueSystem))
                 {
+                    foundOne = true;
                     yield return queueSystem;
                 }
+            }
+            if (!foundOne)
+            {
+                throw new ArgumentException("Unable to find queue with specified key(s): " + string.Join(',', keys));
             }
         }
     }
