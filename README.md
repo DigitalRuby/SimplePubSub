@@ -35,12 +35,16 @@ Your `IConfiguration` needs to contain the following:
 {
 	"DigitalRuby.SimplePubSub.Configuration":
 	{
-		/* each provider must have a unique key */
+		/* each provider must have a unique key, this key is referenced in the ConsumerAttribute, which should be applied to each consumer */
 		"Providers":
 		{
 			"MyRabbitInstance1":
 			{
-				"Type": "RabbitMq"
+				"Type": "RabbitMq",
+				/* short timespans for retry, will not requeue the message */
+				"Retries": ["00:00:00:02","00:00:00:05","00:00:00:10"],
+				/* long timespans for redelivery, will requeue the message */
+				"Redeliveries": ["00:00:02:00","00:00:15:00","00:01:00:00","00:04:00:00","00:12:00:00","01:00:00:00"]
 			},
 			"MyRabbitInstance2":
 			{
@@ -49,6 +53,10 @@ Your `IConfiguration` needs to contain the following:
 			"MyAmazonSqsInstance":
 			{
 				"Type": "AmazonSqs"
+			},
+			"MyInMemoryInstance":
+			{
+				"Type": "InMemory"
 			}
 		}
 	}
@@ -61,6 +69,9 @@ The `Type` can be one of the following for built in providers:
 - Redis
 - ActiveMq
 - AmazonSqs
+- AzureServiceBus
+- Grpc
+- InMemory
 
 You can also specify a `Custom` type, you will need to implement the provider binding as follows:
 

@@ -9,7 +9,7 @@
 		<Authors>jjxtra</Authors>
 		<Company>Digital Ruby, LLC</Company>
 		<Product>Simple Pub Sub</Product>
-		<Description>Declarative and simple pub/sub for .NET using MassTransit.</Description>
+		<Description>Declarative and simple pub/sub for .NET using Mass Transit.</Description>
 		<Copyright>(c) 2022-Present Digital Ruby, LLC</Copyright>
 		<LangVersion>latest</LangVersion>
 		<PackageProjectUrl>https://github.com/DigitalRuby/SimplePubSub</PackageProjectUrl>
@@ -33,9 +33,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DigitalRuby.SimpleDi" Version="1.0.5" />
+		<PackageReference Include="DigitalRuby.SimpleDi" Version="1.0.6" />
 		<PackageReference Include="MassTransit.ActiveMQ" Version="8.0.2" />
 		<PackageReference Include="MassTransit.AmazonSQS" Version="8.0.2" />
+		<PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.0.2" />
+		<PackageReference Include="MassTransit.Grpc" Version="8.0.2" />
 		<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.2" />
 		<PackageReference Include="MassTransit.Redis" Version="8.0.2" />
 	</ItemGroup>
