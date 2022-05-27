@@ -16,11 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSimplePubSub(builder.Configuration);
 
 // like simple di, you can add a second optional parameter for a regex to filter assembly names to scan for consumers, by default only assemblies prefixed by the first part of your entry assembly name are scanned
-//builder.Services.AddSimplePubSub(builder.Configuration, "myassembly1|myassembly2");
+// builder.Services.AddSimplePubSub(builder.Configuration, "myassembly1|myassembly2");
 
 // for web apps (not needed for non-web apps):
 var host = builder.Build();
 host.UseSimplePubSub(host.Configuration);
+
+// you can hook into the MassTransit configuration action if you have additional setup:
+builder.Services.AddSimplePubSub(builder.Configuration, cfg =>
+{
+  // setup additional mass transit stuff like sagas, etc.
+});
 
 // if you are using SimpleDi, you do not need to call `AddSimpleDi` or `UseSimpleDi`.
 ```

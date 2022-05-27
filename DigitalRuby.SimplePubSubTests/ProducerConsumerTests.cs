@@ -92,7 +92,7 @@ public class ConsumerProducerTests
         builder.ConfigureServices((context, services) =>
         {
             Assert.That(services.SimplePubSubAdded(), Is.False);
-            services.AddSimplePubSub(context.Configuration, "digitalruby");
+            services.AddSimplePubSub(context.Configuration, null, "digitalruby");
             Assert.That(services.SimplePubSubAdded(), Is.True);
         });
         using var host = builder.Build();

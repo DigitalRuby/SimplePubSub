@@ -39,15 +39,17 @@ public static class ServicesExtensions
     /// </summary>
     /// <param name="services">Service collection</param>
     /// <param name="configuration">Configuration</param>
+    /// <param name="additionalConfiguration">Allow additional configuration outside simple pub sub</param>
     /// <param name="namespaceFilterRegex">Regex filter for assembly scanning or null for all assemblies</param>
     public static void AddSimplePubSub(this IServiceCollection services,
         IConfiguration configuration,
+        Action<IBusRegistrationConfigurator>? additionalConfiguration = null,
         string? namespaceFilterRegex = null)
     {
         services.AddSimpleDi(configuration, namespaceFilterRegex);
         SimplePubSubConfiguration configurationObject = new();
         configuration.Bind(configPath, configurationObject);
-        AddSimplePubSub(services, configurationObject, namespaceFilterRegex);
+        AddSimplePubSub(services, configurationObject, additionalConfiguration, namespaceFilterRegex);
     }
 
     /// <summary>
@@ -55,9 +57,11 @@ public static class ServicesExtensions
     /// </summary>
     /// <param name="services">Service collection</param>
     /// <param name="configuration">Configuration</param>
+    /// <param name="additionalConfiguration">Allow additional configuration outside simple pub sub</param>
     /// <param name="namespaceFilterRegex">Regex filter for assembly scanning or null for all assemblies</param>
     public static void AddSimplePubSub(this IServiceCollection services,
         SimplePubSubConfiguration configuration,
+        Action<IBusRegistrationConfigurator>? additionalConfiguration = null,
         string? namespaceFilterRegex = null)
     {
         if (services.SimplePubSubAdded())
@@ -100,6 +104,7 @@ public static class ServicesExtensions
                 };
                 queueSystems.AddQueueSystem(provider.Key, busControl);
             }
+            additionalConfiguration?.Invoke(cfg);
         });
 
         services.AddSingleton<IQueueSystems>(queueSystems);
