@@ -20,7 +20,7 @@ builder.Services.AddSimplePubSub(builder.Configuration);
 
 // for web apps (not needed for non-web apps):
 var host = builder.Build();
-host.UseSimplePubSub();
+host.UseSimplePubSub(host.Configuration);
 
 // if you are using SimpleDi, you do not need to call `AddSimpleDi` or `UseSimpleDi`.
 ```

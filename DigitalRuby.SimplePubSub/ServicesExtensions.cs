@@ -109,11 +109,14 @@ public static class ServicesExtensions
     /// <summary>
     /// Use simple pub sub in web application
     /// </summary>
-    /// <param name="services">Services</param>
     /// <param name="appBuilder">App builder</param>
-    public static void UseSimplePubSub(this IServiceCollection services, Microsoft.AspNetCore.Builder.IApplicationBuilder appBuilder)
+    /// <param name="configuration">Configuration</param>
+    /// <param name="namespaceFilterRegex">Regex filter for assembly scanning or null for all assemblies</param>
+    public static void UseSimplePubSub(Microsoft.AspNetCore.Builder.IApplicationBuilder appBuilder,
+        IConfiguration configuration,
+        string? namespaceFilterRegex = null)
     {
-        _ = services;
+        appBuilder.UseSimpleDi(configuration, namespaceFilterRegex);
         if (!objectsCalledInUseSimplePubSub.Contains(appBuilder))
         {
             objectsCalledInUseSimplePubSub.Add(appBuilder);
