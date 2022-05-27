@@ -121,7 +121,7 @@ public class MyMessage
 
 /*
 Apply the consumer attribute to your consumer and implement the MassTransit consumer interface.
-This consumer consumers from all configued providers
+This consumer consumes from all configued providers
 */
 [Consumer]
 public class MyConsumer : MassTransit.IConsumer<MyMessage>
