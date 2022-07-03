@@ -5,7 +5,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.0.2</Version>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Version>1.0.3</Version>
 		<Authors>jjxtra</Authors>
 		<Company>Digital Ruby, LLC</Company>
 		<Product>Simple Pub Sub</Product>
@@ -18,7 +19,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/DigitalRuby/SimplePubSub</RepositoryUrl>
 		<PackageTags>pub;sub;queue;masstransit;rabbitmq;activemq;redis;sqs;amazonsqs;consumer;producer;azure;service;bus;cloud;attribute;reflection</PackageTags>
-		<PackageReleaseNotes>Expose MassTransit configuration to caller</PackageReleaseNotes>
+		<PackageReleaseNotes>Generate documentation file</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
